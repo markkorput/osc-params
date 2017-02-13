@@ -54,7 +54,7 @@ class App extends Component {
         <ClientView {...this.props.client} />
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
-        <GroupView parameters={parameters} layout={layout} actions={actions} />
+        <GroupView parameters={parameters || {}} layout={layout || []} actions={actions} />
       </div>
     );
   }
