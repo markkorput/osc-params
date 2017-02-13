@@ -6,10 +6,12 @@ import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
 
 import * as counterActions from '../actions/counter';
+import * as oscParamsActions from '../osc-params/actions';
 import type { counterStateType } from '../reducers/counter';
 
 const actionCreators = {
   ...counterActions,
+  oscParamsActions,
   push,
 };
 
