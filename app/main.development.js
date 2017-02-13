@@ -1,8 +1,11 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
+import OscBridge from './osc-params/oscBridge';
 
 let menu;
 let template;
 let mainWindow = null;
+
+OscBridge.start();
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
