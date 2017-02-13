@@ -1,5 +1,5 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
-import OscBridge from './oscBridge';
+import OscBridge from './osc-params/oscBridge';
 
 let menu;
 let template;
