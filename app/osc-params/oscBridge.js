@@ -1,20 +1,20 @@
 const OSC = require('osc-js');
 
 const config = {
-    // receiver: 'ws',
-    // udpServer: {
-    //   host: 'localhost',
-    //   port: 41234,
-    //   exclusive: false
-    // },
+  // receiver: 'ws',
+  udpServer: {
+    // host: 'localhost',
+    port: 8082,
+    exclusive: false
+  },
   udpClient: {
     //   host: 'localhost',
     port: 8081,
   },
-    // wsServer: {
-    //   host: 'localhost',
-    //   port: 8080
-    // }
+  // wsServer: {
+  //   host: 'localhost',
+  //   port: 8080
+  // }
 };
 
 const osc = new OSC({ plugin: new OSC.BridgePlugin(config) });

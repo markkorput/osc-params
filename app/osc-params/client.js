@@ -1,17 +1,15 @@
-// local
-// const Group = require("./group")
-// const Layout = require("./layout")
-
-// const OSC = require('osc-js')
-// the client-side OSC library is included in the Html components
 import OSC from 'osc-js';
 import Promise from 'bluebird';
+import EventEmitter from 'events';
+
+const Layout = require("./layout")
 
 class Client {
-  constructor() {
-    this.localPort = 8082;
-    this.serverHost = '127.0.0.1';
-    this.serverPort = 8081;
+  constructor(localPort, serverHost, serverPort) {
+    this.localPort = localPort || 8082;
+    this.serverHost = serverHost || '127.0.0.1';
+    this.serverPort = serverPort || 8081;
+    this.eventEmitter = new EventEmitter();
   }
 
   setup() {
@@ -21,74 +19,36 @@ class Client {
       this.osc.on('error', reject);
       this.osc.on('open', resolve);
 
-      this.osc.on('message', (msg) => {
-          console.log('msg! ', msg)
-      });
+      // this.osc.on('message', (msg) => {
+      //     console.log('msg! ', msg)
+      // });
 
-      //
-      // @osc.on '/ofxOscPlus/layout', (msg) =>
-      //     console.log('layout! ', msg)
-      //     layout = new Layout(msg.args[0])
-      //
-      //     if @group
-      //         layout.applyToGroup(@group)
-      //     else
-      //         @group = layout.getGroup()
+      this.osc.on('/ofxOscPlus/layout', (msg) => {this._onLayoutMessage(msg);});
 
       this.osc.open(); // connect by default to ws://localhost:8080
       this.configureBridge();
     });
 
-        // this.signup();
-        // this.requestLayout()
+    // this.signup();
+    // this.requestLayout()
   }
 
-    // _onMessage(msg, rinfo){
-    //     // console.log("An OSC packet just arrived: ", packet, " :: ", info);
-    //     if(msg[0] == "/ofxOscPlus/layout"){
-    //
-    //         if(msg.length < 2){
-    //             console.log("got /ofxOscPlus/layout OSC message without args");
-    //             return;
-    //         }
-    //
-    //         if(!this.group)
-    //             this.group = new Group();
-    //
-    //         var layout = new Layout(msg[1]);
-    //         layout.applyTo(this.group);
-    //
-    //         if(this.onLayout)
-    //             this.onLayout(this);
-    //
-    //         return;
-    //     }
-    // }
+  _onLayoutMessage(msg){
+    // console.log('layout! ', msg)
+    let layout = new Layout(msg.args[0])
 
-    // _onPacket(packet, info){
-    //     // console.log("An OSC packet just arrived: ", packet, " :: ", info);
-    //     if(packet.address == "/ofxOscPlus/layout"){
-    //         if(packet.args.length < 1){
-    //             console.log("got /ofxOscPlus/layout OSC message without args");
-    //             return;
-    //         }
-    //
-    //         if(!this.group)
-    //             this.group = new Group();
-    //
-    //         var layout = new Layout(packet.args[0]);
-    //         layout.applyTo(this.group);
-    //
-    //         if(this.onLayout)
-    //             this.onLayout(this);
-    //         return;
-    //     }
-    // }
+    if(this.group)
+       layout.applyTo(this.group)
+    else
+       this.group = layout.getGroup()
+
+    this.eventEmitter.emit('layoutUpdated', this);
+  }
 
   _send(address, args) {
     let message = new OSC.Message(address);
 
-    for (let arg in args || []) {
+    for (let arg of args || []) {
       message.add(arg);
     }
 
@@ -109,12 +69,28 @@ class Client {
   }
 
   requestLayout() {
+    console.log('requesting params layout...');
     this._send('/ofxOscPlus/layout', [this.localPort]);
   }
 
   configureBridge() {
       console.log("configureBridge not implemented yet");
   }
+}
+
+Client.instance_for = (localPort, serverHost, serverPort) => {
+    Client._instances = Client._instances || []
+    for(let instance of Client._instances){
+        if(instance.localPort == localPort
+                && instance.serverHost == serverHost
+                && instance.serverPort == serverPort){
+            return instance;
+        }
+    }
+
+    let newInstance = new Client(localPort, serverHost, serverPort);
+    Client._instances.push(newInstance);
+    return newInstance;
 }
 
 export default Client;
