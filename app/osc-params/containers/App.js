@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import styles from './App.css';
-import Client from '../components/Client';
+import ClientView from '../components/ClientView';
+import GroupView from '../components/GroupView';
 import * as Actions from '../actions';
 import OscClient from '../client';
 
@@ -44,12 +45,16 @@ class App extends Component {
   }
 
   render() {
+    const { actions } = this.props;
+    const { parameters, layout } = this.props.params;
+
     return (
       <div className={styles.container}>
         <Link to="/counter">to Counter</Link>
-        <Client {...this.props.client} />
+        <ClientView {...this.props.client} />
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
+        <GroupView parameters={parameters} layout={layout} actions={actions} />
       </div>
     );
   }

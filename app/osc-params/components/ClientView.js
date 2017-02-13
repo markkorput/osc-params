@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-class Client extends React.Component {
+class ClientView extends React.Component {
   render() {
     return (<div className="client">
       <label>host <input type="text" id="host-input" value={this.props.serverHost || ''} /></label>
@@ -9,4 +9,4 @@ class Client extends React.Component {
   }
 }
 
-export default Client;
+export default ClientView;

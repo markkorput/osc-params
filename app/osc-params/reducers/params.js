@@ -10,7 +10,7 @@ function paramsGroupToLayoutState(paramsGroup, prefix){
     if(item.type){ // if it has a type it means its a param, not a param group
       state.push(prefix+item.name);
     } else {
-      state.push(paramsGroupToLayoutState(item))
+      state.push(paramsGroupToLayoutState(item, prefix))
     }
   }
 
@@ -35,7 +35,7 @@ function paramsGroupToParamsState(paramsGroup, prefix){
 
       state[param.id] = param;
     } else {
-      state = {...state, ...paramsGroupToParamsState(item, prefix+item.name+".")}
+      state = {...state, ...paramsGroupToParamsState(item, prefix)}
     }
   }
 
