@@ -1,5 +1,7 @@
 import OSC from 'osc-js';
 import Promise from 'bluebird';
+import EventEmitter from 'events';
+
 const Layout = require("./layout")
 
 class Client {
@@ -7,6 +9,7 @@ class Client {
     this.localPort = localPort || 8082;
     this.serverHost = serverHost || '127.0.0.1';
     this.serverPort = serverPort || 8081;
+    this.eventEmitter = new EventEmitter();
   }
 
   setup() {
@@ -20,67 +23,27 @@ class Client {
       //     console.log('msg! ', msg)
       // });
 
-      this.osc.on('/ofxOscPlus/layout', this._onLayoutMessage);
+      this.osc.on('/ofxOscPlus/layout', (msg) => {this._onLayoutMessage(msg);});
 
       this.osc.open(); // connect by default to ws://localhost:8080
       this.configureBridge();
     });
 
-        // this.signup();
-        // this.requestLayout()
+    // this.signup();
+    // this.requestLayout()
   }
 
   _onLayoutMessage(msg){
-    console.log('layout! ', msg)
-    layout = new Layout(msg.args[0])
+    // console.log('layout! ', msg)
+    let layout = new Layout(msg.args[0])
 
     if(this.group)
-       layout.applyToGroup(this.group)
+       layout.applyTo(this.group)
     else
        this.group = layout.getGroup()
+
+    this.eventEmitter.emit('layoutUpdated', this);
   }
-
-    // _onMessage(msg, rinfo){
-    //     // console.log("An OSC packet just arrived: ", packet, " :: ", info);
-    //     if(msg[0] == "/ofxOscPlus/layout"){
-    //
-    //         if(msg.length < 2){
-    //             console.log("got /ofxOscPlus/layout OSC message without args");
-    //             return;
-    //         }
-    //
-    //         if(!this.group)
-    //             this.group = new Group();
-    //
-    //         var layout = new Layout(msg[1]);
-    //         layout.applyTo(this.group);
-    //
-    //         if(this.onLayout)
-    //             this.onLayout(this);
-    //
-    //         return;
-    //     }
-    // }
-
-    // _onPacket(packet, info){
-    //     // console.log("An OSC packet just arrived: ", packet, " :: ", info);
-    //     if(packet.address == "/ofxOscPlus/layout"){
-    //         if(packet.args.length < 1){
-    //             console.log("got /ofxOscPlus/layout OSC message without args");
-    //             return;
-    //         }
-    //
-    //         if(!this.group)
-    //             this.group = new Group();
-    //
-    //         var layout = new Layout(packet.args[0]);
-    //         layout.applyTo(this.group);
-    //
-    //         if(this.onLayout)
-    //             this.onLayout(this);
-    //         return;
-    //     }
-    // }
 
   _send(address, args) {
     let message = new OSC.Message(address);
@@ -106,6 +69,7 @@ class Client {
   }
 
   requestLayout() {
+    console.log('requesting params layout...');
     this._send('/ofxOscPlus/layout', [this.localPort]);
   }
 
