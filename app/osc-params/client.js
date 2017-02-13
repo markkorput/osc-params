@@ -88,7 +88,7 @@ class Client {
   _send(address, args) {
     let message = new OSC.Message(address);
 
-    for (let arg in args || []) {
+    for (let arg of args || []) {
       message.add(arg);
     }
 
