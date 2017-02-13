@@ -46,7 +46,6 @@ class App extends Component {
 
   render() {
     const { actions } = this.props;
-    const { parameters, layout } = this.props.params;
 
     return (
       <div className={styles.container}>
@@ -54,7 +53,9 @@ class App extends Component {
         <ClientView {...this.props.client} />
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
-        <GroupView parameters={parameters || {}} layout={layout || []} actions={actions} />
+        {this.props.params
+          ? <GroupView groupId={this.props.params.rootGroupName || 'undefined'} state={this.props.params} actions={actions} />
+          : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
     );
   }

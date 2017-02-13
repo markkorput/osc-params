@@ -2,17 +2,19 @@ import React, { PropTypes } from 'react';
 
 class ParameterView extends React.Component {
   static propTypes = {
-    parameter: PropTypes.object,
+    state: PropTypes.object.isRequired,
+    parameterId: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired
   };
 
   render() {
-    const parameter = this.props.parameter;
+    const { state, parameterId } = this.props;
+    const param = state.parameters[parameterId];
 
     return (
       <li className="parameter">
-        {parameter
-          ? <label>{parameter.name} <input type="text" defaultValue={parameter.value || ''} /></label>
+        {param
+          ? <label>{param.name} <input type="text" defaultValue={param.value || ''} /></label>
           : <label>parameter info not available</label>}
       </li>
     );
