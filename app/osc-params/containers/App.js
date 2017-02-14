@@ -18,8 +18,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    console.log('running setClient action');
-    this.props.actions.setClient(this.client);
+        this.props.actions.setClient(this.client);
 
     this.client.setup()
     .then(() => {
@@ -28,6 +27,11 @@ class App extends Component {
       this.client.eventEmitter.on('layoutUpdated', (client) => {
         this.props.actions.setRootParamsGroup(client.group)
       });
+
+      this.client.eventEmitter.on('paramUpdate', (param) => {
+          this.props.actions.setParamValue(param.getPath(), param.getValue());
+          //this.forceUpdate();
+      })
 
       this.client.requestLayout();
     }).catch((err) => {
@@ -54,7 +58,7 @@ class App extends Component {
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
         {this.props.params
-          ? <GroupView groupId={this.props.params.rootGroupName || 'undefined'} state={this.props.params} actions={actions} />
+          ? <GroupView groupId={this.props.params.rootGroupId || 'undefined'} state={this.props.params} actions={actions} />
           : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
     );

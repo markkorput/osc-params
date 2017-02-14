@@ -16,3 +16,14 @@ export function setRootParamsGroup(paramsGroup){
     payload: paramsGroup
   }
 }
+
+
+export function setParamValue(path, value){
+  return {
+    type: 'SET_PARAM_VALUE',
+    payload: {
+      path: path,
+      value: value
+    }
+  }
+}

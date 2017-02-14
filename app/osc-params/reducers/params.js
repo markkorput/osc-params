@@ -1,17 +1,15 @@
 
 const initialState = {};
 
-function paramsGroupToParameterList(paramsGroup, prefix){
-  prefix = prefix || '';
-  prefix = prefix + paramsGroup.name+".";
+function paramsGroupToParameterList(paramsGroup){
   let state = {};
 
   for(const item of paramsGroup.getChildren()){
     if(item.type == 'group'){ // if it has a type it means its a param, not a param group
-      state = {...state, ...paramsGroupToParameterList(item, prefix)}
+      state = {...state, ...paramsGroupToParameterList(item)}
     } else {
       const param = {
-        id: prefix+item.name,
+        id: item.getPath(),
         name: item.name,
         type: item.type,
         value: item.value,
@@ -26,13 +24,11 @@ function paramsGroupToParameterList(paramsGroup, prefix){
   return state;
 }
 
-function paramsGroupToGroupList(paramsGroup, prefix){
-  prefix = prefix || '';
-  prefix = prefix + paramsGroup.name;
+function paramsGroupToGroupList(paramsGroup){
   let state = {};
 
   let group = {
-    id: prefix,
+    id: paramsGroup.getPath(),
     name: paramsGroup.name,
     items: []
   };
@@ -41,13 +37,13 @@ function paramsGroupToGroupList(paramsGroup, prefix){
     if(item.type == 'group'){
       group.items.push({
         type: 'group',
-        id: prefix+'.'+item.name
+        id: item.getPath()
       });
-      state = {...state, ...paramsGroupToGroupList(item, prefix+'.')}
+      state = {...state, ...paramsGroupToGroupList(item)}
     } else {
       group.items.push({
         type: 'parameter',
-        id: prefix+'.'+item.name
+        id: item.getPath()
       });
     }
   }
@@ -63,8 +59,16 @@ export default function params(state = initialState, action) {
         ...state,
         parameters: paramsGroupToParameterList(action.payload),
         groups: paramsGroupToGroupList(action.payload),
-        rootGroupName: action.payload.name
+        rootGroupId: action.payload.path
       };
+
+    case 'SET_PARAM_VALUE':
+      let newstate = {
+        ...state
+      };
+
+      newstate.parameters[action.payload.path].value = action.payload.value;
+      return newstate;
   }
 
   return state;

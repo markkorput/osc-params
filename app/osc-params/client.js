@@ -43,6 +43,7 @@ class Client {
        this.group = layout.getGroup()
 
     this.eventEmitter.emit('layoutUpdated', this);
+    this._registerParameterCallbacks()
   }
 
   _send(address, args) {
@@ -69,12 +70,28 @@ class Client {
   }
 
   requestLayout() {
-    console.log('requesting params layout...');
+    console.log('requesting layout');
     this._send('/ofxOscPlus/layout', [this.localPort]);
   }
 
   configureBridge() {
       console.log("configureBridge not implemented yet");
+  }
+
+  _registerParameterCallbacks(){
+    if(!this.group){
+      return;
+    }
+
+
+    for(const param of this.group.getParameters()){
+      // console.log('register OSC value listener: ' + param.path);
+      this.osc.on(param.path, (msg) => {
+        // console.log('value ', msg.args[0], ' for ', msg.address);
+        param.set(msg.args[0]);
+        this.eventEmitter.emit('paramUpdate', param);
+      });
+    }
   }
 }
 

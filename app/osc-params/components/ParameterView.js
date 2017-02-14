@@ -14,7 +14,7 @@ class ParameterView extends React.Component {
     return (
       <li className="parameter">
         {param
-          ? <label>{param.name} <input type="text" defaultValue={param.value || ''} /></label>
+          ? <label>{param.name} <input type="text" value={param.value || ''} /></label>
           : <label>parameter info not available</label>}
       </li>
     );
