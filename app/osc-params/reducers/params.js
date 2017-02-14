@@ -1,29 +1,15 @@
 
 const initialState = {};
 
-function paramsGroupToLayoutState(paramsGroup, prefix){
-  prefix = prefix || '';
-  prefix = prefix + paramsGroup.name+".";
-  let state = [];
-
-  for(let item of paramsGroup.children){
-    if(item.type){ // if it has a type it means its a param, not a param group
-      state.push(prefix+item.name);
-    } else {
-      state.push(paramsGroupToLayoutState(item))
-    }
-  }
-
-  return state;
-}
-
-function paramsGroupToParamsState(paramsGroup, prefix){
+function paramsGroupToParameterList(paramsGroup, prefix){
   prefix = prefix || '';
   prefix = prefix + paramsGroup.name+".";
   let state = {};
 
-  for(let item of paramsGroup.children){
-    if(item.type){ // if it has a type it means its a param, not a param group
+  for(const item of paramsGroup.getChildren()){
+    if(item.type == 'group'){ // if it has a type it means its a param, not a param group
+      state = {...state, ...paramsGroupToParameterList(item, prefix)}
+    } else {
       const param = {
         id: prefix+item.name,
         name: item.name,
@@ -34,22 +20,50 @@ function paramsGroupToParamsState(paramsGroup, prefix){
       }
 
       state[param.id] = param;
-    } else {
-      state = {...state, ...paramsGroupToParamsState(item, prefix+item.name+".")}
     }
   }
 
   return state;
 }
 
+function paramsGroupToGroupList(paramsGroup, prefix){
+  prefix = prefix || '';
+  prefix = prefix + paramsGroup.name;
+  let state = {};
+
+  let group = {
+    id: prefix,
+    name: paramsGroup.name,
+    items: []
+  };
+
+  for(let item of paramsGroup.getChildren()){
+    if(item.type == 'group'){
+      group.items.push({
+        type: 'group',
+        id: prefix+'.'+item.name
+      });
+      state = {...state, ...paramsGroupToGroupList(item, prefix+'.')}
+    } else {
+      group.items.push({
+        type: 'parameter',
+        id: prefix+'.'+item.name
+      });
+    }
+  }
+
+  state[group.id] = group;
+  return state;
+}
 
 export default function params(state = initialState, action) {
   switch(action.type){
     case 'SET_ROOT_PARAMS_GROUP':
       return {
         ...state,
-        parameters: paramsGroupToParamsState(action.payload),
-        layout: paramsGroupToLayoutState(action.payload)
+        parameters: paramsGroupToParameterList(action.payload),
+        groups: paramsGroupToGroupList(action.payload),
+        rootGroupName: action.payload.name
       };
   }
 

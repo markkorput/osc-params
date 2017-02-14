@@ -3,6 +3,7 @@ const _ = require('lodash');
 class Group {
   constructor(name) {
     this.name = name;
+    this.type = 'group';
   }
 
   add(child) {
@@ -21,6 +22,10 @@ class Group {
 
   clear() {
     this.children = [];
+  }
+
+  getChildren() {
+    return this.children || []
   }
 }
 

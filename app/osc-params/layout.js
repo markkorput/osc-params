@@ -22,31 +22,34 @@ class Layout {
 
     const json = JSON.parse(this.jsonText);
 
-    group.clear();
-
-    for (const key in json) {
-      if (json[key].type == undefined) {
-        group.setName(key);
-        this._apply(json[key], group);
-      }
+    if(!Array.isArray(json) || !json.length == 1){
+      console.log("Expected one-item array");
+      return;
     }
+
+    group.clear();
+    this._apply(json[0], group)
   }
 
   _apply(json, group) {
-    for (const key in json) {
-      const data = json[key];
+    group.setName(json.name);
 
-      if (data.type) {
-        const p = new Param(key,
-                                data.type,
-                                data.value,
-                                data.min,
-                                data.max);
-        group.add(p);
+    for (const child of json.children || []) {
+
+      // group?
+      if(Array.isArray(child.children)){
+        const g = new Group();
+        this._apply(child, g);
+        group.add(g)
+
+      // single parameters
       } else {
-        const g = new Group(key);
-        this._apply(data, g);
-        group.add(g);
+        const p = new Param(child.name,
+                            child.type,
+                            child.value,
+                            child.min,
+                            child.max);
+        group.add(p);
       }
     }
   }
