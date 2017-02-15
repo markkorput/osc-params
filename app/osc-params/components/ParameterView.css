@@ -1,0 +1,22 @@
+.container {
+  display: block;
+  height: 30px;
+  vertical-align: middle;
+  cursor: ew-resize;
+}
+
+.container label {
+  display: inline-block;
+  color: #CCC;
+  width: 125px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: inherit;
+}
+
+.container input {
+  display: inline-block;
+  border: none;
+  background: #444;
+  cursor: inherit;
+}

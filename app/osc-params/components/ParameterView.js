@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import styles from './ParameterView.css';
 
 class ParameterView extends React.Component {
   static propTypes = {
@@ -16,8 +17,8 @@ class ParameterView extends React.Component {
     }
 
     return (
-      <div className="parameter">
-        <label>{param.name}</label><span>{param.value || ''}</span>
+      <div className={styles.container}>
+        <label>{param.name}</label><input value={param.value || ''} readOnly="readOnly" />
       </div>
     );
   }
