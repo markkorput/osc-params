@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import GroupHeaderView from './GroupHeaderView';
 import ParameterView from './parameter/Parameter';
-import styles from './ColumnView.css';
 
 class ColumnView extends React.Component {
   static propTypes = {
@@ -20,9 +19,9 @@ class ColumnView extends React.Component {
     const uiItems = this._uiItems(rootGroupItem);
 
     return (
-      <ul className={styles.container}>
+      <ul className="column-view">
         {uiItems.map(item =>
-            <li className={(item.type == 'group' ? styles.groupItem : styles.paramItem)} key={item.id}>
+            <li className={(item.type == 'group' ? 'group' : 'param')} key={item.id}>
               {item.type == 'group'
                 ? <GroupHeaderView key={item.id} groupId={item.id} state={state} />
                 : <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />}

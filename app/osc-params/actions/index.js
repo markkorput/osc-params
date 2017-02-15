@@ -20,10 +20,7 @@ export function setRootParamsGroup(paramsGroup){
   }
 }
 
-
 export function setParamValue(path, value){
-  eventEmitter.emit('setParamValue', path, value);
-
   return {
     type: 'SET_PARAM_VALUE',
     payload: {
@@ -34,5 +31,6 @@ export function setParamValue(path, value){
 }
 
 export function setParamValueManual(path, value){
+  eventEmitter.emit('setParamValue', path, value);
   return setParamValue(path, value);
 }

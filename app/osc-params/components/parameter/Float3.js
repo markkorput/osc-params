@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Base.css';
+import styles from './Parameter.css';
 
 /* reducers */
 const paramValueReducer = (state, path) => {

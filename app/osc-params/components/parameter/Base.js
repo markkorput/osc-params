@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import styles from './Base.css';
+import styles from './Parameter.css';
 
 export default class Base extends React.Component {
   static propTypes = {
