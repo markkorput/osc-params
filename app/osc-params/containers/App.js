@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import styles from './App.css';
 import ClientView from '../components/ClientView';
-import GroupView from '../components/GroupView';
+import ColumnView from '../components/ColumnView';
 import * as Actions from '../actions';
 import OscClient from '../client';
 
@@ -30,7 +30,6 @@ class App extends Component {
 
       this.client.eventEmitter.on('paramUpdate', (param) => {
           this.props.actions.setParamValue(param.getPath(), param.getValue());
-          //this.forceUpdate();
       })
 
       this.client.requestLayout();
@@ -58,8 +57,8 @@ class App extends Component {
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
         {this.props.params
-          ? <GroupView groupId={this.props.params.rootGroupId || 'undefined'} state={this.props.params} actions={actions} />
-          : <div id="no-ayout">no parameter layout received yet</div>}
+            ? <ColumnView state={this.props.params} actions={actions} />
+            : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
     );
   }

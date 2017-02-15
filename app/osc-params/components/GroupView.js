@@ -20,10 +20,11 @@ class GroupView extends React.Component {
       <ul className='group'>
         <li><strong>{group.name}</strong></li>
         {group.items.map(item =>
-          item.type == 'parameter'
-            ? <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />
-            : <GroupView key={item.id} groupId={item.id} state={state} actions={actions} />
-        )}
+          <li className={styles.item}>
+            {item.type == 'parameter'
+              ? <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />
+              : <GroupView key={item.id} groupId={item.id} state={state} actions={actions} />}
+          </li>)}
       </ul>
     );
   }
