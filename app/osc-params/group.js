@@ -1,8 +1,9 @@
 const _ = require('lodash');
 
 class Group {
-  constructor(name) {
+  constructor(name, path) {
     this.name = name;
+    this.path = path || name;
     this.type = 'group';
   }
 
@@ -16,6 +17,15 @@ class Group {
     this.name = name;
   }
 
+  setPath(p){
+    this.path = p;
+    // todo; update all child-paths
+  }
+
+  getPath(){
+    return this.path || '';
+  }
+
   get(name) {
     return _.find(this.children || [], ['name', name]);
   }
@@ -25,7 +35,24 @@ class Group {
   }
 
   getChildren() {
-    return this.children || []
+    return this.children || [];
+  }
+
+  getParameters(recursive){
+    if(recursive == undefined)
+      recursive = true;
+
+    let result = [];
+
+    for(const child of this.getChildren()){
+      if(child.type != 'group'){
+        result.push(child);
+      } else if(recursive) {
+        result = [...result, ...child.getParameters(true)];
+      }
+    }
+
+    return result;
   }
 }
 

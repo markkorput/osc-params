@@ -31,17 +31,17 @@ class Layout {
     this._apply(json[0], group)
   }
 
-  _apply(json, group) {
+  _apply(json, group, prefix) {
+    prefix = prefix || '/';
     group.setName(json.name);
+    group.setPath(prefix+json.name)
 
     for (const child of json.children || []) {
-
       // group?
       if(Array.isArray(child.children)){
         const g = new Group();
-        this._apply(child, g);
+        this._apply(child, g, group.getPath()+'/');
         group.add(g)
-
       // single parameters
       } else {
         const p = new Param(child.name,
@@ -49,6 +49,7 @@ class Layout {
                             child.value,
                             child.min,
                             child.max);
+        p.setPath(group.getPath()+'/'+child.name);
         group.add(p);
       }
     }

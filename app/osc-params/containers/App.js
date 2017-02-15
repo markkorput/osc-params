@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import styles from './App.css';
 import ClientView from '../components/ClientView';
-import GroupView from '../components/GroupView';
+import ColumnView from '../components/ColumnView';
 import * as Actions from '../actions';
 import OscClient from '../client';
 
@@ -18,8 +18,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    console.log('running setClient action');
-    this.props.actions.setClient(this.client);
+        this.props.actions.setClient(this.client);
 
     this.client.setup()
     .then(() => {
@@ -28,6 +27,10 @@ class App extends Component {
       this.client.eventEmitter.on('layoutUpdated', (client) => {
         this.props.actions.setRootParamsGroup(client.group)
       });
+
+      this.client.eventEmitter.on('paramUpdate', (param) => {
+          this.props.actions.setParamValue(param.getPath(), param.getValue());
+      })
 
       this.client.requestLayout();
     }).catch((err) => {
@@ -54,10 +57,16 @@ class App extends Component {
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
         {this.props.params
-          ? <GroupView groupId={this.props.params.rootGroupName || 'undefined'} state={this.props.params} actions={actions} />
-          : <div id="no-ayout">no parameter layout received yet</div>}
+            ? <ColumnView state={this.props.params} actions={actions} />
+            : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
     );
+  }
+
+  onMouseUp(event){
+    event.preventDefault();
+    document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+    document.exitPointerLock();
   }
 }
 
