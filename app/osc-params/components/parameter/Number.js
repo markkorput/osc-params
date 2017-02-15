@@ -1,26 +1,14 @@
 import React, { PropTypes } from 'react';
-import styles from './ParameterView.css';
+import Base from './Base';
+import styles from './Base.css';
 
 /* reducers */
 const paramValueReducer = (state, path) => {
   return state.parameters[path].value;
 }
 
-class ParameterView extends React.Component {
-  static propTypes = {
-    state: PropTypes.object.isRequired,
-    parameterId: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired
-  };
-
-  render() {
-    const { state, parameterId } = this.props;
-    const param = state.parameters[parameterId];
-
-    if(!param){
-      return (<label>parameter info not available</label>);
-    }
-
+export default class Number extends Base {
+  renderParam(param) {
     return (
       <div className={styles.container} onMouseDown={(e) => this.onMouseDown(e)} onMouseUp={(e) => this.onMouseUp(e)}>
         <label>{param.name}</label><input value={param.value || ''} readOnly="readOnly" />
@@ -51,5 +39,3 @@ class ParameterView extends React.Component {
     this.props.actions.setParamValueManual(this.props.parameterId, paramValueReducer(this.props.state, this.props.parameterId) + sensitivity * event.movementX)
   }
 }
-
-export default ParameterView;

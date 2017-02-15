@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import ParameterView from '../components/ParameterView';
+import ParameterView from '../components/parameter/Parameter';
 
 class GroupView extends React.Component {
   static propTypes = {

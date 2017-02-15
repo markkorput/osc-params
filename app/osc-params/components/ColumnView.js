@@ -1,12 +1,7 @@
 import React, { PropTypes } from 'react';
 import GroupHeaderView from './GroupHeaderView';
-import ParameterView from './ParameterView';
+import ParameterView from './parameter/Parameter';
 import styles from './ColumnView.css';
-
-
-const MIN_COL_WIDTH = 300
-const MAX_COL_WIDTH = 500
-const MIN_ROWS = 5
 
 class ColumnView extends React.Component {
   static propTypes = {
