@@ -27,3 +27,7 @@ export function setParamValue(path, value){
     }
   }
 }
+
+export function setParamValueManual(path, value){
+  return setParamValue(path, value);
+}

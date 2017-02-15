@@ -18,8 +18,6 @@ class ColumnView extends React.Component {
     const { state, actions } = this.props;
     const rootGroupItem = (state.groups || {})[state.rootGroupId];
 
-    console.log('propprop: ', this.props);
-
     if(!rootGroupItem){
       return (<ul className='group'><li>No group</li></ul>);
     }

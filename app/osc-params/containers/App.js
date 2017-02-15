@@ -62,6 +62,12 @@ class App extends Component {
       </div>
     );
   }
+
+  onMouseUp(event){
+    event.preventDefault();
+    document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+    document.exitPointerLock();
+  }
 }
 
 function mapState(state) {
