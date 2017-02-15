@@ -33,6 +33,11 @@ class Client {
     // this.requestLayout()
   }
 
+  sendValue(id, value){
+    // TODO; check if id matches any of the local ids
+    this._send(id, [value]);
+  }
+
   _onLayoutMessage(msg){
     // console.log('layout! ', msg)
     let layout = new Layout(msg.args[0])
@@ -93,21 +98,6 @@ class Client {
       });
     }
   }
-}
-
-Client.instance_for = (localPort, serverHost, serverPort) => {
-    Client._instances = Client._instances || []
-    for(let instance of Client._instances){
-        if(instance.localPort == localPort
-                && instance.serverHost == serverHost
-                && instance.serverPort == serverPort){
-            return instance;
-        }
-    }
-
-    let newInstance = new Client(localPort, serverHost, serverPort);
-    Client._instances.push(newInstance);
-    return newInstance;
 }
 
 export default Client;
