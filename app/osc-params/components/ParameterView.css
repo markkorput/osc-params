@@ -1,7 +1,8 @@
 .container {
   display: block;
-  height: 30px;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
+  /*box-sizing: border-box;*/
+  padding: 10px;
   cursor: ew-resize;
 }
 
@@ -17,6 +18,8 @@
 .container input {
   display: inline-block;
   border: none;
-  background: #444;
+  background: transparent;
+  color: #F0F0F0;
+  font-weight: bold;
   cursor: inherit;
 }

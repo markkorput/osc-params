@@ -11,7 +11,7 @@
   list-style: none;
   margin:0;
   padding:0;
-  height: 500px;
+  height: 100%;
   overflow: hidden;
 
   background: #333;
@@ -36,4 +36,5 @@
   overflow: hidden;
   width: 300px;
   box-sizing: border-box;
+  padding: 5px;
 }
