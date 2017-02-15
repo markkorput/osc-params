@@ -11,9 +11,7 @@ class GroupHeaderView extends React.Component {
     const group = (state.groups || {})[this.props.groupId];
 
     return (
-      <li className="group">
-        <strong>{group.name}</strong>
-      </li>
+      <span>{group.name}</span>
     );
   }
 }

@@ -3,6 +3,11 @@ import GroupHeaderView from './GroupHeaderView';
 import ParameterView from './ParameterView';
 import styles from './ColumnView.css';
 
+
+const MIN_COL_WIDTH = 300
+const MAX_COL_WIDTH = 500
+const MIN_ROWS = 5
+
 class ColumnView extends React.Component {
   static propTypes = {
     state: PropTypes.object.isRequired,
@@ -13,6 +18,8 @@ class ColumnView extends React.Component {
     const { state, actions } = this.props;
     const rootGroupItem = (state.groups || {})[state.rootGroupId];
 
+    console.log('propprop: ', this.props);
+
     if(!rootGroupItem){
       return (<ul className='group'><li>No group</li></ul>);
     }
@@ -20,17 +27,15 @@ class ColumnView extends React.Component {
     const uiItems = this._uiItems(rootGroupItem);
 
     return (
-      <div className={styles.container}>
-        <ul className={styles.column}>
-
-          {uiItems.map(item =>
-              <li className={styles.item}>
-                {item.type == 'group'
-                  ? <GroupHeaderView key={item.id} groupId={item.id} state={state} />
-                  : <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />}
-              </li>)}
-        </ul>
-      </div>
+      <ul className={styles.container}>
+        {uiItems.map(item =>
+            <li className={(item.type == 'group' ? styles.groupItem : styles.paramItem)} key={item.id}>
+              {item.type == 'group'
+                ? <GroupHeaderView key={item.id} groupId={item.id} state={state} />
+                : <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />}
+            </li>
+        )}
+      </ul>
     );
   }
 
@@ -63,4 +68,6 @@ class ColumnView extends React.Component {
   }
 }
 
-export default ColumnView
+// the Dimensions wrapper give the ColumnView component
+// containerWidth and containerHeight properties
+export default ColumnView;

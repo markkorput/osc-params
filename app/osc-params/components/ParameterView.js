@@ -11,12 +11,13 @@ class ParameterView extends React.Component {
     const { state, parameterId } = this.props;
     const param = state.parameters[parameterId];
 
+    if(!param){
+      return (<label>parameter info not available</label>);
+    }
+
     return (
       <div className="parameter">
-        {param
-          //? <label>{param.name} <input type="text" value={param.value || ''} /></label>
-          ? <label><strong>{param.name}</strong> {param.value || ''}</label>
-          : <label>parameter info not available</label>}
+        <label>{param.name}</label><span>{param.value || ''}</span>
       </div>
     );
   }
