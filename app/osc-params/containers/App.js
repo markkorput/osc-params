@@ -29,11 +29,11 @@ class App extends Component {
 
       this.client.eventEmitter.on('paramUpdate', (param) => {
         this.props.actions.setParamValue(param.getPath(), param.getValue());
-      })
+      });
 
       Actions.eventEmitter.on('setParamValue', (path, val) => {
         this.client.set(path, val, {manual: true})
-      })
+      });
 
       this.client.requestLayout();
     }).catch((err) => {

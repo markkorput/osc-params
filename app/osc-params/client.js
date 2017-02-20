@@ -44,7 +44,10 @@ class Client {
 
     // param.set returns true if the value changed
     // if there was no change, we're done
-    if(param.set(value) != true){
+    let setResult = param.set(value, {force: opts.manual !== true});
+
+    if(setResult != true){
+      this.eventEmitter.emit('valueRejected', param);
       return;
     }
 
@@ -94,6 +97,7 @@ class Client {
       return;
     }
 
+    // console.log('_sending: ', address, ' with: ', args);
     this.osc.send(message);
   }
 
