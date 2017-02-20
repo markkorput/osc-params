@@ -57,3 +57,48 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }*/
+
+.column-view {
+  /*display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;*/
+
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-flow: column wrap; /* Safari 6.1+ */
+  display: flex;
+  flex-flow: column wrap;
+
+  list-style: none;
+  margin:0;
+  padding:0;
+  height: 100%;
+  /*overflow: hidden;*/
+
+  background: #333;
+  color: #EEE;
+}
+
+.column-view > li.param:nth-of-type(even) {
+  background: #353535;
+}
+
+.column-view .param {
+  display: inline-block;
+  margin: 0;
+
+  overflow: hidden;
+  width: 300px;
+  box-sizing: border-box;
+}
+
+.column-view .group{
+  font-weight: bold;
+  background: #000;
+
+  display: inline-block;
+  margin: 0;
+  overflow: hidden;
+  width: 300px;
+  box-sizing: border-box;
+  padding: 5px;
+}

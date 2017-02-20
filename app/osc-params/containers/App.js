@@ -10,7 +10,6 @@ import ColumnView from '../components/ColumnView';
 import * as Actions from '../actions';
 import OscClient from '../client';
 
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -18,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-        this.props.actions.setClient(this.client);
+    this.props.actions.setClient(this.client);
 
     this.client.setup()
     .then(() => {
@@ -29,8 +28,12 @@ class App extends Component {
       });
 
       this.client.eventEmitter.on('paramUpdate', (param) => {
-          this.props.actions.setParamValue(param.getPath(), param.getValue());
-      })
+        this.props.actions.setParamValue(param.getPath(), param.getValue());
+      });
+
+      Actions.eventEmitter.on('setParamValue', (path, val) => {
+        this.client.set(path, val, {manual: true})
+      });
 
       this.client.requestLayout();
     }).catch((err) => {

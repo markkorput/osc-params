@@ -33,6 +33,45 @@ class Client {
     // this.requestLayout()
   }
 
+  // this method is called by the
+  set(id, value, opts){
+    opts = opts || {};
+
+    let param = this.getParamById(id);
+
+    if(!param)
+      return;
+
+    // param.set returns true if the value changed
+    // if there was no change, we're done
+    let setResult = param.set(value, {force: opts.manual !== true});
+
+    if(setResult != true){
+      this.eventEmitter.emit('valueRejected', param);
+      return;
+    }
+
+    // if the value was changed manually (locally),
+    // send the value to master
+    if(opts.manual == true){
+      // TODO? check if id matches any of the local ids
+      this._send(id, [param.getValueAsString()]);
+      return;
+    }
+
+    // update came from master; notify UI listeners
+    this.eventEmitter.emit('paramUpdate', param);
+  }
+
+  getParamById(id){
+    for(const param of this.group ? this.group.getParameters() : []){
+      if(param.path == id)
+        return param;
+    }
+
+    return null;
+  }
+
   _onLayoutMessage(msg){
     // console.log('layout! ', msg)
     let layout = new Layout(msg.args[0])
@@ -58,6 +97,7 @@ class Client {
       return;
     }
 
+    // console.log('_sending: ', address, ' with: ', args);
     this.osc.send(message);
   }
 
@@ -83,31 +123,13 @@ class Client {
       return;
     }
 
-
     for(const param of this.group.getParameters()){
       // console.log('register OSC value listener: ' + param.path);
       this.osc.on(param.path, (msg) => {
-        // console.log('value ', msg.args[0], ' for ', msg.address);
-        param.set(msg.args[0]);
-        this.eventEmitter.emit('paramUpdate', param);
+        this.set(param.path, msg.args[0]);
       });
     }
   }
-}
-
-Client.instance_for = (localPort, serverHost, serverPort) => {
-    Client._instances = Client._instances || []
-    for(let instance of Client._instances){
-        if(instance.localPort == localPort
-                && instance.serverHost == serverHost
-                && instance.serverPort == serverPort){
-            return instance;
-        }
-    }
-
-    let newInstance = new Client(localPort, serverHost, serverPort);
-    Client._instances.push(newInstance);
-    return newInstance;
 }
 
 export default Client;

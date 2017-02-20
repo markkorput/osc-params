@@ -12,9 +12,9 @@ function paramsGroupToParameterList(paramsGroup){
         id: item.getPath(),
         name: item.name,
         type: item.type,
-        value: item.value,
-        min: item.min,
-        max: item.max
+        value: item.get(),
+        min: item.getMin(),
+        max: item.getMax()
       }
 
       state[param.id] = param;

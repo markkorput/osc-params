@@ -3,6 +3,7 @@ import Base from './Base';
 import Number from './Number';
 import Color from './Color';
 import Point from './Point';
+import Bool from './Bool';
 import styles from './Parameter.css';
 
 export default class ParameterView extends Base {
@@ -10,6 +11,7 @@ export default class ParameterView extends Base {
     switch(param.type){
       case 'color': return(<Color {...this.props} />);
       case 'point': return(<Point {...this.props} />);
+      case 'bool': return(<Bool {...this.props} />);
     };
 
     return (<Number {...this.props} />);

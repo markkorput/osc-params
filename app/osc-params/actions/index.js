@@ -1,3 +1,6 @@
+import EventEmitter from 'events';
+
+export const eventEmitter = new EventEmitter();
 
 export function setClient(client){
   return {
@@ -17,7 +20,6 @@ export function setRootParamsGroup(paramsGroup){
   }
 }
 
-
 export function setParamValue(path, value){
   return {
     type: 'SET_PARAM_VALUE',
@@ -29,5 +31,6 @@ export function setParamValue(path, value){
 }
 
 export function setParamValueManual(path, value){
+  eventEmitter.emit('setParamValue', path, value);
   return setParamValue(path, value);
 }

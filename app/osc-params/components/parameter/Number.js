@@ -1,17 +1,27 @@
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Base.css';
+import styles from './Parameter.css';
 
 /* reducers */
 const paramValueReducer = (state, path) => {
   return state.parameters[path].value;
 }
 
+const paramMinReducer = (state, path) => {
+  return state.parameters[path].min;
+}
+
+const paramMaxReducer = (state, path) => {
+  return state.parameters[path].max;
+}
+
 export default class Number extends Base {
   renderParam(param) {
+    const val = window.Number((param.value).toFixed(6));
+
     return (
       <div className={styles.container} onMouseDown={(e) => this.onMouseDown(e)} onMouseUp={(e) => this.onMouseUp(e)}>
-        <label>{param.name}</label><input value={param.value || ''} readOnly="readOnly" />
+        <label>{param.name}</label><input value={val} readOnly="readOnly" />
       </div>
     );
   }
@@ -35,7 +45,19 @@ export default class Number extends Base {
 
   onDrag(event){
     event.preventDefault();
-    let sensitivity = 1.0;
-    this.props.actions.setParamValueManual(this.props.parameterId, paramValueReducer(this.props.state, this.props.parameterId) + sensitivity * event.movementX)
+
+    let value = paramValueReducer(this.props.state, this.props.parameterId);
+    const min = paramMinReducer(this.props.state, this.props.parameterId);
+    const max = paramMaxReducer(this.props.state, this.props.parameterId);
+
+    let sensitivity = Math.min(1.0, Math.abs(max-min)*0.01);
+    value += sensitivity * event.movementX;
+
+    if(min !== undefined && value < min)
+      value = min;
+    if(max !== undefined && value > max)
+      value = max;
+
+    this.props.actions.setParamValueManual(this.props.parameterId, value);
   }
 }

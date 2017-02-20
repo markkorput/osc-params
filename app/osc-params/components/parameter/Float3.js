@@ -1,22 +1,16 @@
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Base.css';
+import styles from './Parameter.css';
+import * as paramHelpers from '../../reducers/paramHelpers';
 
-/* reducers */
-const paramValueReducer = (state, path) => {
-  return state.parameters[path].value;
-}
-
-export default class Color extends Base {
+export default class Float3 extends Base {
   renderParam(param) {
-    const rgba = (param.value || '0,0,0').split(',');
     const labels = ['X', 'Y', 'Z'];
-
     return (
       <div className="param color">
-        {rgba.map((attr,idx) =>
+        {param.value.map((attr,idx) =>
           <div key={idx} className={styles.container} onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
-            <label>{param.name} ({labels[idx]})</label><input value={rgba[idx]} readOnly="readOnly" />
+            <label>{param.name} ({labels[idx]})</label><input value={Number((param.value[idx]).toFixed(6))} readOnly="readOnly" />
           </div>
         )}
       </div>
@@ -44,9 +38,29 @@ export default class Color extends Base {
 
   onDrag(event){
     event.preventDefault();
-    let sensitivity = 1.0;
-    let parts = paramValueReducer(this.props.state, this.props.parameterId).split(',');
-    parts[this.mousemovelistenerIndex] = parseFloat(parts[this.mousemovelistenerIndex]) + sensitivity * event.movementX;
-    this.props.actions.setParamValueManual(this.props.parameterId, parts.join(','));
+
+    // get param from state
+    const param = paramHelpers.paramReducer(this.props.state, this.props.parameterId);
+    // get value from param
+    let value = param.value;
+    // get the specific float we're editing
+    let valuePart = value[this.mousemovelistenerIndex] || 0.0;
+    // get min/max bounds
+    const min = (param.min || [])[this.mousemovelistenerIndex];
+    const max = (param.max || [])[this.mousemovelistenerIndex];
+
+    // calculate mouse sensitivity
+    let sensitivity = Math.min(0.1, Math.abs((max || 1000.0)-(min || 0.0))*0.01);
+    // apply changes to float
+    valuePart = valuePart + sensitivity * event.movementX;
+    // apply min/max bounds
+    if(min !== undefined)
+      valuePart = Math.max(min, valuePart);
+    if(max !== undefined)
+      valuePart = Math.min(max, valuePart);
+
+    // perform state-update action
+    value[this.mousemovelistenerIndex] = valuePart;
+    this.props.actions.setParamValueManual(this.props.parameterId, value);
   }
 }
