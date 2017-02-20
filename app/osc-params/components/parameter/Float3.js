@@ -6,12 +6,11 @@ import * as paramHelpers from '../../reducers/paramHelpers';
 export default class Float3 extends Base {
   renderParam(param) {
     const labels = ['X', 'Y', 'Z'];
-
     return (
       <div className="param color">
         {param.value.map((attr,idx) =>
           <div key={idx} className={styles.container} onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
-            <label>{param.name} ({labels[idx]})</label><input value={param.value[idx]} readOnly="readOnly" />
+            <label>{param.name} ({labels[idx]})</label><input value={Number((param.value[idx]).toFixed(6))} readOnly="readOnly" />
           </div>
         )}
       </div>

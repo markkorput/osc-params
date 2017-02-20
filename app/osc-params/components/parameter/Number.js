@@ -17,9 +17,11 @@ const paramMaxReducer = (state, path) => {
 
 export default class Number extends Base {
   renderParam(param) {
+    const val = window.Number((param.value).toFixed(6));
+
     return (
       <div className={styles.container} onMouseDown={(e) => this.onMouseDown(e)} onMouseUp={(e) => this.onMouseUp(e)}>
-        <label>{param.name}</label><input value={param.value || ''} readOnly="readOnly" />
+        <label>{param.name}</label><input value={val} readOnly="readOnly" />
       </div>
     );
   }
