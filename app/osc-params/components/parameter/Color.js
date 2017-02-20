@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Parameter.css';
 import * as paramHelpers from '../../reducers/paramHelpers';
 
 export default class Color extends Base {
@@ -16,9 +15,9 @@ export default class Color extends Base {
     };
 
     return (
-      <div className="param color">
+      <div className="binder">
         {param.value.map((attr,idx) =>
-          <div key={idx} className={styles.container} onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
+          <div key={idx} className="container" onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
             <label>{param.name} ({labels[idx]})</label><input value={param.value[idx]} style={style} readOnly="readOnly" />
           </div>
         )}

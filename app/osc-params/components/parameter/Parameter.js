@@ -5,7 +5,6 @@ import Color from './Color';
 import Point from './Point';
 import Bool from './Bool';
 import String from './String';
-import styles from './Parameter.css';
 
 export default class ParameterView extends Base {
   renderParam(param) {
