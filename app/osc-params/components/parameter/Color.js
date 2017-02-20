@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import Base from './Base';
 import styles from './Parameter.css';
@@ -7,11 +8,18 @@ export default class Color extends Base {
   renderParam(param) {
     const labels = ['R', 'G', 'B', 'A'];
 
+    const average = _.sum(param.value)/4.0;
+
+    const style = {
+      backgroundColor: 'rgba('+param.value.join(',')+')',
+      color: (average > 130 ? 'black' : 'white')
+    };
+
     return (
       <div className="param color">
         {param.value.map((attr,idx) =>
           <div key={idx} className={styles.container} onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
-            <label>{param.name} ({labels[idx]})</label><input value={param.value[idx]} readOnly="readOnly" />
+            <label>{param.name} ({labels[idx]})</label><input value={param.value[idx]} style={style} readOnly="readOnly" />
           </div>
         )}
       </div>
