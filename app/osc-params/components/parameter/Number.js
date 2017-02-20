@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Parameter.css';
 
 /* reducers */
 const paramValueReducer = (state, path) => {
@@ -17,10 +16,10 @@ const paramMaxReducer = (state, path) => {
 
 export default class Number extends Base {
   renderParam(param) {
-    const val = window.Number((param.value).toFixed(6));
+    const val = window.Number((param.value || 0).toFixed(6));
 
     return (
-      <div className={styles.container} onMouseDown={(e) => this.onMouseDown(e)} onMouseUp={(e) => this.onMouseUp(e)}>
+      <div className="container" onMouseDown={(e) => this.onMouseDown(e)} onMouseUp={(e) => this.onMouseUp(e)}>
         <label>{param.name}</label><input value={val} readOnly="readOnly" />
       </div>
     );

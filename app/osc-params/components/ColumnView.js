@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import GroupHeaderView from './GroupHeaderView';
 import ParameterView from './parameter/Parameter';
+import * as paramHelpers from '../reducers/paramHelpers';
 
 class ColumnView extends React.Component {
   static propTypes = {
@@ -21,7 +22,7 @@ class ColumnView extends React.Component {
     return (
       <ul className="column-view">
         {uiItems.map(item =>
-            <li className={(item.type == 'group' ? 'group' : 'param')} key={item.id}>
+            <li className={(item.type == 'group' ? item.type : 'param type-'+paramHelpers.paramReducer(state, item.id).type)} key={item.id}>
               {item.type == 'group'
                 ? <GroupHeaderView key={item.id} groupId={item.id} state={state} />
                 : <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />}

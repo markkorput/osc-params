@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
 import Base from './Base';
-import styles from './Parameter.css';
 import * as paramHelpers from '../../reducers/paramHelpers';
 
 export default class Float3 extends Base {
   renderParam(param) {
     const labels = ['X', 'Y', 'Z'];
     return (
-      <div className="param color">
+      <div className="binder">
         {param.value.map((attr,idx) =>
-          <div key={idx} className={styles.container} onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
+          <div key={idx} className="container" onMouseDown={(e) => this.onMouseDown(idx, e)} onMouseUp={(e) => this.onMouseUp(e)}>
             <label>{param.name} ({labels[idx]})</label><input value={Number((param.value[idx]).toFixed(6))} readOnly="readOnly" />
           </div>
         )}

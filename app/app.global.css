@@ -102,3 +102,34 @@ a:hover {
   box-sizing: border-box;
   padding: 5px;
 }
+
+.column-view .param .container {
+  display: block;
+  /*vertical-align: middle;*/
+  /*box-sizing: border-box;*/
+  padding: 10px;
+  cursor: ew-resize;
+}
+
+.column-view .param.type-string .container,
+.column-view .param.type-bool .container {
+  cursor: pointer;
+}
+
+.column-view .param .container label {
+  display: inline-block;
+  color: #CCC;
+  width: 125px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: inherit;
+}
+
+.column-view .param .container input {
+  display: inline-block;
+  border: none;
+  background: transparent;
+  color: #F0F0F0;
+  font-weight: bold;
+  cursor: inherit;
+}
