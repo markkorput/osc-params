@@ -33,9 +33,40 @@ class Client {
     // this.requestLayout()
   }
 
-  sendValue(id, value){
-    // TODO; check if id matches any of the local ids
-    this._send(id, [value]);
+  // this method is called by the
+  set(id, value, opts){
+    opts = opts || {};
+
+    let param = this.getParamById(id);
+
+    if(!param)
+      return;
+
+    // param.set returns true if the value changed
+    // if there was no change, we're done
+    if(param.set(value) != true){
+      return;
+    }
+
+    // if the value was changed manually (locally),
+    // send the value to master
+    if(opts.manual == true){
+      // TODO? check if id matches any of the local ids
+      this._send(id, [param.getValueAsString()]);
+      return;
+    }
+
+    // update came from master; notify UI listeners
+    this.eventEmitter.emit('paramUpdate', param);
+  }
+
+  getParamById(id){
+    for(const param of this.group ? this.group.getParameters() : []){
+      if(param.path == id)
+        return param;
+    }
+
+    return null;
   }
 
   _onLayoutMessage(msg){
@@ -88,13 +119,10 @@ class Client {
       return;
     }
 
-
     for(const param of this.group.getParameters()){
       // console.log('register OSC value listener: ' + param.path);
       this.osc.on(param.path, (msg) => {
-        // console.log('value ', msg.args[0], ' for ', msg.address);
-        param.set(msg.args[0]);
-        this.eventEmitter.emit('paramUpdate', param);
+        this.set(param.path, msg.args[0]);
       });
     }
   }

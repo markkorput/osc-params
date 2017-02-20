@@ -7,6 +7,14 @@ const paramValueReducer = (state, path) => {
   return state.parameters[path].value;
 }
 
+const paramMinReducer = (state, path) => {
+  return state.parameters[path].min;
+}
+
+const paramMaxReducer = (state, path) => {
+  return state.parameters[path].max;
+}
+
 export default class Number extends Base {
   renderParam(param) {
     return (
@@ -36,6 +44,16 @@ export default class Number extends Base {
   onDrag(event){
     event.preventDefault();
     let sensitivity = 1.0;
-    this.props.actions.setParamValueManual(this.props.parameterId, paramValueReducer(this.props.state, this.props.parameterId) + sensitivity * event.movementX)
+    let value = paramValueReducer(this.props.state, this.props.parameterId);
+    const min = paramMinReducer(this.props.state, this.props.parameterId);
+    const max = paramMaxReducer(this.props.state, this.props.parameterId);
+
+    value += sensitivity * event.movementX;
+    // if(value < min)
+    //   value = min;
+    // if(value > max)
+    //   value = max;
+
+    this.props.actions.setParamValueManual(this.props.parameterId, value);
   }
 }
