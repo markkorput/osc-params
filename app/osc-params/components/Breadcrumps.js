@@ -36,8 +36,7 @@ class Breadcrumps extends React.Component {
   }
 
   onBreadcrumpClick(e, group_id){
-    // this.props.actions.
-    console.log('clicked: ', group_id);
+    this.props.actions.setUiGroup(group_id);
   }
 }
 

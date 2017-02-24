@@ -62,7 +62,7 @@ class App extends Component {
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
         {ui.groupId
-          ? <Breadcrumps state={{params, ui}} />
+          ? <Breadcrumps state={{params, ui}} actions={actions} />
           : null}
         {params
             ? <ColumnView state={this.props.params} actions={actions} />

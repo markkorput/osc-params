@@ -59,6 +59,19 @@ a:hover {
   cursor: pointer;
 }*/
 
+ul#breadcrumps{
+  list-style: none;
+}
+
+ul#breadcrumps li{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+ul#breadcrumps a{
+  color: #FFF;
+}
+
 .column-view {
   /*display: flex;
   flex-direction: column;
