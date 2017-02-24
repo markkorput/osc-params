@@ -41,3 +41,13 @@ export function setUiGroup(groupId){
     payload: groupId
   }
 }
+
+export function setUiGroupVisibility(groupId, visible){
+  return {
+    type: 'SET_UI_GROUP_VISIBILITY',
+    payload: {
+      groupId,
+      visible: visible !== false
+    }
+  }
+}

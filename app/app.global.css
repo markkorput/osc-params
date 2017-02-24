@@ -120,6 +120,12 @@ ul#breadcrumps a{
 .column-view .group a{
   color: #FFF;
 }
+
+.column-view .group a.collapse{
+  float: right;
+  text-decoration: none;
+}
+
 .column-view .param .container {
   display: block;
   /*vertical-align: middle;*/

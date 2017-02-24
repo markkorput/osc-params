@@ -29,7 +29,7 @@ class Breadcrumps extends React.Component {
     return (
       <ul id="breadcrumps">
         {hierarchy.map(id =>
-          <li><a href="#" onClick={(e) => this.onBreadcrumpClick(e, id)}>{_.last(id.split('/'))}</a></li>
+          <li key={id}><a href="#" onClick={(e) => this.onBreadcrumpClick(e, id)}>{_.last(id.split('/'))}</a></li>
         )}
       </ul>
     );
