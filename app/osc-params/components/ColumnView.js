@@ -6,12 +6,13 @@ import * as paramHelpers from '../reducers/paramHelpers';
 class ColumnView extends React.Component {
   static propTypes = {
     state: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    groupId: PropTypes.string
   };
 
   render() {
     const { state, actions } = this.props;
-    const rootGroupItem = (state.groups || {})[state.rootGroupId];
+    const rootGroupItem = (state.groups || {})[this.props.groupId || state.rootGroupId];
 
     if(!rootGroupItem){
       return (<ul className='group'><li>No group</li></ul>);

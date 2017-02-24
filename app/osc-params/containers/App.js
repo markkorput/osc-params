@@ -65,7 +65,7 @@ class App extends Component {
           ? <Breadcrumps state={{params, ui}} actions={actions} />
           : null}
         {params
-            ? <ColumnView state={this.props.params} actions={actions} />
+            ? <ColumnView state={params} groupId={ui.groupId} actions={actions} />
             : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
     );
