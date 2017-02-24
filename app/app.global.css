@@ -8,6 +8,7 @@ body {
   margin:0;
   padding:0;
   height: 100%;
+  background: #333;
 }
 
 #root {
@@ -103,6 +104,9 @@ a:hover {
   padding: 5px;
 }
 
+.column-view .group a{
+  color: #FFF;
+}
 .column-view .param .container {
   display: block;
   /*vertical-align: middle;*/
