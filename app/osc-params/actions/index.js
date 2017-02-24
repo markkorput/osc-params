@@ -34,3 +34,20 @@ export function setParamValueManual(path, value){
   eventEmitter.emit('setParamValue', path, value);
   return setParamValue(path, value);
 }
+
+export function setUiGroup(groupId){
+  return {
+    type: 'SET_UI_GROUP',
+    payload: groupId
+  }
+}
+
+export function setUiGroupVisibility(groupId, visible){
+  return {
+    type: 'SET_UI_GROUP_VISIBILITY',
+    payload: {
+      groupId,
+      visible: visible !== false
+    }
+  }
+}
