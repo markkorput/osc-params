@@ -24,7 +24,7 @@ class ColumnView extends React.Component {
         {uiItems.map(item =>
             <li className={(item.type == 'group' ? item.type : 'param type-'+paramHelpers.paramReducer(state, item.id).type)} key={item.id}>
               {item.type == 'group'
-                ? <GroupHeaderView key={item.id} groupId={item.id} state={state} />
+                ? <GroupHeaderView key={item.id} groupId={item.id} state={state} actions={actions} />
                 : <ParameterView key={item.id} parameterId={item.id} state={state} actions={actions} />}
             </li>
         )}

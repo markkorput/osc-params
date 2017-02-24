@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import styles from './App.css';
 import ClientView from '../components/ClientView';
 import ColumnView from '../components/ColumnView';
+import Breadcrumps from '../components/Breadcrumps';
 import * as Actions from '../actions';
 import OscClient from '../client';
 
@@ -51,7 +52,8 @@ class App extends Component {
   }
 
   render() {
-    const { actions } = this.props;
+    // console.log('propps: ', this.props);
+    const { actions, params, ui } = this.props;
 
     return (
       <div className={styles.container}>
@@ -59,7 +61,10 @@ class App extends Component {
         <ClientView {...this.props.client} />
         <button onClick={() => this.client.signup()}>send signup</button>
         <button onClick={() => this.client.requestLayout()}>request layout</button>
-        {this.props.params
+        {ui.groupId
+          ? <Breadcrumps state={{params, ui}} />
+          : null}
+        {params
             ? <ColumnView state={this.props.params} actions={actions} />
             : <div id="no-ayout">no parameter layout received yet</div>}
       </div>
